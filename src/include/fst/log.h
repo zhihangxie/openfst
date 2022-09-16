@@ -18,63 +18,9 @@
 #ifndef FST_LIB_LOG_H_
 #define FST_LIB_LOG_H_
 
-#include <cassert>
-#include <iostream>
-#include <string>
-
 #include <fst/types.h>
 #include <fst/flags.h>
 
-DECLARE_int32(v);
-
-class LogMessage {
- public:
-  LogMessage(const std::string &type) : fatal_(type == "FATAL") {
-    std::cerr << type << ": ";
-  }
-  ~LogMessage() {
-    std::cerr << std::endl;
-    if(fatal_)
-      exit(1);
-  }
-  std::ostream &stream() { return std::cerr; }
-
- private:
-  bool fatal_;
-};
-
-#define LOG(type) LogMessage(#type).stream()
-#define VLOG(level) if ((level) <= FLAGS_v) LOG(INFO)
-
-// Checks
-inline void FstCheck(bool x, const char* expr,
-                const char *file, int line) {
-  if (!x) {
-    LOG(FATAL) << "Check failed: \"" << expr
-               << "\" file: " << file
-               << " line: " << line;
-  }
-}
-
-#define CHECK(x) FstCheck(static_cast<bool>(x), #x, __FILE__, __LINE__)
-#define CHECK_EQ(x, y) CHECK((x) == (y))
-#define CHECK_LT(x, y) CHECK((x) < (y))
-#define CHECK_GT(x, y) CHECK((x) > (y))
-#define CHECK_LE(x, y) CHECK((x) <= (y))
-#define CHECK_GE(x, y) CHECK((x) >= (y))
-#define CHECK_NE(x, y) CHECK((x) != (y))
-
-// Debug checks
-#define DCHECK(x) assert(x)
-#define DCHECK_EQ(x, y) DCHECK((x) == (y))
-#define DCHECK_LT(x, y) DCHECK((x) < (y))
-#define DCHECK_GT(x, y) DCHECK((x) > (y))
-#define DCHECK_LE(x, y) DCHECK((x) <= (y))
-#define DCHECK_GE(x, y) DCHECK((x) >= (y))
-#define DCHECK_NE(x, y) DCHECK((x) != (y))
-
-
-// Ports
-#define ATTRIBUTE_DEPRECATED __attribute__((deprecated))
+#include "glog/logging.h"
 
 #endif  // FST_LIB_LOG_H_

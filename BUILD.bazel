@@ -266,7 +266,6 @@ cc_library(
     name = "base",
     srcs = [
         prefix_dir + "lib/compat.cc",
-        prefix_dir + "lib/flags.cc",
     ],
     hdrs = [
         prefix_dir + "include/fst/compat.h",
@@ -286,7 +285,10 @@ cc_library(
     deps = select({
         ":has_absl": ["@io_abseil_cpp//absl/synchronization"],
         "//conditions:default": [],
-    }),
+    }) + [
+        "@com_github_google_glog//:glog",
+        "@com_github_gflags_gflags//:gflags",
+    ],
 )
 
 # Core library tests (test/)
