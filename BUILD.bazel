@@ -283,10 +283,10 @@ cc_library(
     }),
     includes = [prefix_dir + "include"],
     deps = select({
-        ":has_absl": ["@io_abseil_cpp//absl/synchronization"],
+        ":has_absl": ["@com_google_absl//absl/synchronization"],
         "//conditions:default": [],
     }) + [
-        "@com_github_google_glog//:glog",
+        "@com_github_glog_glog//:glog",
         "@com_github_gflags_gflags//:gflags",
     ],
 )
